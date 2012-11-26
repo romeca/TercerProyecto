@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" href="https://lh4.googleusercontent.com/-ul_Uh76Qisg/UKSMGmMVSGI/AAAAAAAAB2M/EAetoPVBc0I/s117/screenshot.7.png">
+  <meta charset="utf-8">
+  <title>Tercer Tarea Programada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+  <style type="text/css">
+      body {
+        padding-top: 55px;padding-bottom:0px;
+      }
+      #view {
+        height: 500px;
+        overflow: scroll;
+    } ?
+    </style>
+  <script src="jquery-latest.js" type="text/javascript"></script>
+  <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="joint.all.min.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+  <script type="text/javascript" src="d3.js"></script>
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <ul class="nav" role="navigation">
+      <li class="dropdown">
+      <li class=""><a data-toggle="modal" href="#archivo">Archivo</a></li>
+      <li class=""><a data-toggle="modal" href="#agregar">Agregar</a></li>
+      <li class=""><a data-toggle="modal" href="#eliminar">Eliminar</a></li>
+      <li class=""><a data-toggle="modal" href="#cambiar">Nueva Conexion</a></li>
+      <li class=""><a data-toggle="modal" href="#eliminarConection">Eliminar Conexion</a></li>
+      <li class=""><a data-toggle="modal" href="#manualAyuda">Ayuda</a></li>
+    </ul>
+  </div>
+</div>
+<div>
+  <H1 align="center">Editor de Clases UML</H1>
+</div>
+<div class="container-fluid" >
+  <div class="row-fluid">
+    <div class="span6">
+      <textarea id="textarea" rows="24" class="span12"></textarea>
+    </div>
+    <div id="view" class="span6 well"></div>
+  </div>
+</div>
+
+<!-- DIV PARA EL BOTON -->
+
+<div align="center">
+  <button class="btn btn-inverse"  data-dismiss="modal" onclick="file.makeDiagram(getElementById('textarea').value);">Refrescar</button>
+</div>
+
+<!-- MODALS PARA LAS DIFERENTES COSAS A EDITAR -->
+
+<!-- MODAL ARCHIVO -->
+<div class="modal hide fade" id="archivo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">          
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Cargar archivo</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span2">
+        <p>Seleccionar archivo:</p>
+      </div>
+      <div class="span1">
+        <input type="file" id="miArchivo">
+        <script type="text/javascript">
+          function readSingleFile(evt) {
+            var f = evt.target.files[0]; 
+            if (f) {
+              var r = new FileReader();
+              r.onload = function(e) { 
+              var contents = e.target.result;
+                document.getElementById("textarea").value = contents;
+              }
+              r.readAsText(f);
+            } else { 
+              alert("Failed to load file");
+            }
+          }
+          document.getElementById('miArchivo').addEventListener('change', readSingleFile, false);
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    <button class="btn btn-info" data-dismiss="modal" aria-hidden="true" onclick="file.doDL(document.getElementById('textarea').value);">Guardar</button>
+  </div>
+</div>
+
+  <!-- MODAL CAMBIAR CONEXION -->
+<div class="modal hide fade" id="manualAyuda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">          
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Manual de usuario</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span7">
+        <p> * El programa permite al usuario cargar archivos con extension XML y muestra el diagrama de clases UML de dicho archivo.</br></p></br>
+        <p>* Las clases UML pueden ser editadas al gusto del usuario, es decir, puede agregar, eliminar y modificar las clases y sus conexiones.</br></p></br>
+        <p>* Las opciones del menu ayudan a que se realicen dichas tareas, y en caso de no coincidir una clase, el programa reporte el debido error.</br></p></br>
+        <p>* Para actualizar el panel visualizador, es necesario dar click al boton "Refrescar" cada vez que se realice un cambio.</br></p>
+        <p>* El Lenguaje Unificado de Modelado(UML) es el lenguaje de modelado de sistemas software más conocido y utilizado 
+en la actualidad siendo respaldado por el Object Management Group. Es un lenguaje gráfico para visualizar, especificar, 
+construir y documentar un sistema. UML ofrece un estándar para describir un plano del sistema (un modelo), incluyendo 
+aspectos conceptuales tales como procesos de negocio, funciones del sistema, y aspectos concretos como expresiones de 
+lenguajes de programación, esquemas de bases de datos y compuestos reciclados </br></p>
+        <p>* El proyecto debe desplegar una interfaz que le permita al usuario cargar un archivo de extensión .XML. 
+El usuario cuenta con dos paneles, uno para mostrar el código XML y el otro para visualizar su contenido. El archivo deberá contar con lo siguiente: 
+</br>
+> 1. Las clases
+</br>
+> 2. Las conexiones entre las clases
+<br> 
+> 3. Los métodos y atributos que contiene cada una de las clases</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR -->
+<div class="modal hide fade" id="agregar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">          
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Agregar una nueva clase</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span2">
+        <p>Nombre:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="agregarClaseNombre">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Atributos:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="agregarClaseAtributos" data-provide="typeahead" placeholder="atrib1(),atri2(),...">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Metodos:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="agregarClaseMetodos" data-provide="typeahead" placeholder="met1(),met2(),...">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Posicionamiento:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="PosX" data-provide="typeahead" placeholder="PosicionX">
+        <input type="text" id="PosY" data-provide="typeahead" placeholder="PosicionY">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    <button class="btn btn-info" data-dismiss="modal" onclick="file.addClass()" aria-hidden="true">Guardar</button>
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal hide fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">          
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Eliminar una clase</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span2">
+        <p>Nombre de la clase:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="eliminarCN">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    <button class="btn btn-info" data-dismiss="modal" aria-hidden="true" onClick="file.eliminaClase(document.getElementById('eliminarCN').value);">Eliminar Clase</button>
+  </div>
+</div>
+
+<!-- MODAL CAMBIAR CONEXION -->
+<div class="modal hide fade" id="cambiar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">          
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Cambiar conexion con clase</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span2">
+        <p>Clase madre:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="claseMadre">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Clase hija:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="claseHija">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Tipo de conexion:</p>
+      </div>
+      <div class="span7" align="center">
+         <a class="btn btn-info" href="#" onClick="file.validarClase(claseMadre.value,claseHija.value,'Herencia');" aria-hidden="true"><img src="http://www.facebook.com/ajax/messaging/attachment.php?attach_id=aacb4e802c8fb0fc6e490d7724cd0a57&mid=id.132415753578841&hash=AQDG2xKCf_t67OVP" class="img-rounded"></a></button>
+         <a class="btn btn-info" href="#" onClick="file.validarClase(claseMadre.value,claseHija.value,'Asociacion');" aria-hidden="true"><img src="http://www.facebook.com/ajax/messaging/attachment.php?attach_id=3cf3b200bf5260f75f651879169ecb11&mid=id.557430837607298&hash=AQAMCTGRwvSUoFpS" class="img-rounded"></a></button>
+         <a class="btn btn-info" href="#" onClick="file.validarClase(claseMadre.value,claseHija.value,'Composicion');" aria-hidden="true"><img src="http://www.facebook.com/ajax/messaging/attachment.php?attach_id=f0505775b61168534216fcdff59d36c4&mid=id.132415753578841&hash=AQD0Hg7IRD3piJ4A" class="img-rounded"></a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR CONEXION-->
+<div class="modal hide fade" id="eliminarConection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">          
+  <div class="modal-header" class="span6">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Eliminar una conexion</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span2">
+        <p>Nombre de la clase 1:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="nombreConec1">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Nombre de la clase 2:</p>
+      </div>
+      <div class="span1">
+        <input type="text" id="nombreConec2">
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <p>Tipo de conexion:</p>
+      </div>
+      <div class="span7" align="center">
+        <a class="btn btn-info" href="#" onClick="file.eliminaConection(document.getElementById('nombreConec1').value, document.getElementById('nombreConec2').value, 'Herencia');" aria-hidden="true"><img src="http://www.facebook.com/ajax/messaging/attachment.php?attach_id=aacb4e802c8fb0fc6e490d7724cd0a57&mid=id.132415753578841&hash=AQDG2xKCf_t67OVP" class="img-rounded"></a></button>
+        <a class="btn btn-info" href="#" onClick="file.eliminaConection(document.getElementById('nombreConec1').value, document.getElementById('nombreConec2').value, 'Asociacion');" aria-hidden="true"><img src="http://www.facebook.com/ajax/messaging/attachment.php?attach_id=3cf3b200bf5260f75f651879169ecb11&mid=id.557430837607298&hash=AQAMCTGRwvSUoFpS" class="img-rounded"></a></button>
+        <a class="btn btn-info" href="#" onClick="file.eliminaConection(document.getElementById('nombreConec1').value, document.getElementById('nombreConec2').value, 'Composicion');" aria-hidden="true"><img src="http://www.facebook.com/ajax/messaging/attachment.php?attach_id=f0505775b61168534216fcdff59d36c4&mid=id.132415753578841&hash=AQD0Hg7IRD3piJ4A" class="img-rounded"></a></button>
+      </div>
+  </div>
+</div>
+
+</body>
+</html>

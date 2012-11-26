@@ -1,0 +1,8 @@
+<clases>
+  <clase nombre='Vehiculo' atributos='-motor:int' metodos='$avanzar()' posX='50' posY='20'/>
+  <clase nombre='Automovil' atributos='-edad:int$-estado:string' metodos='' posX='280' posY='20'/>
+  <clase nombre='Camioneta' atributos='' metodos='+detenerse()' posX='250' posY='250'/>
+  <conexion clase1='Camioneta' clase2='Vehiculo' tipo='Herencia'/>
+  <conexion clase1='Automovil' clase2='Vehiculo' tipo='Herencia'/>
+  <conexion clase1='Vehiculo' clase2='Camioneta' tipo='Asociacion'/>
+</clases>
